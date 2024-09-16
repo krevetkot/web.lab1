@@ -1,6 +1,7 @@
 package labs;
 import com.fastcgi.FCGIInterface;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
@@ -17,12 +18,22 @@ public class Main {
 
             Validator validator = new Validator();
             try {
-                boolean result = validator.validate(parse(QUERY_STRING));
-                if (result){
+                LinkedHashMap <String, Float> params = parse(QUERY_STRING);
+                boolean isValidated = validator.validateParams(params);
+                boolean isHit = validator.isHit(params);
+                Date date = new Date();
+                if (isHit && isValidated){
+                    System.out.println(params.get("x").toString() + params.get("y").toString() + params.get("r").toString()
+                            + date.getTime());
+
                     //отправить ответ: вы попали молодцы
                 }
+                else if (!isHit){
+                    System.out.println(params.get("x").toString() + params.get("y").toString() + params.get("r").toString()
+                            + date.getTime());
+                }
                 else {
-                    //отправить, что вы не попали
+                    System.out.println("Недопустимые значения");
                 }
             } catch (NumberFormatException e){
                 //отправить что произошла ошибка: неверные значения
@@ -31,12 +42,12 @@ public class Main {
         }
     }
 
-    public static LinkedHashMap<String, String> parse(String queryString){
-        LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
+    public static LinkedHashMap<String, Float> parse(String queryString){
+        LinkedHashMap<String, Float> parameters = new LinkedHashMap<>();
         String[] reses = queryString.split("&");
-        String x = reses[0].substring(2);
-        String y = reses[1].substring(2);
-        String r = reses[2].substring(2);
+        float x = Float.parseFloat(reses[0].substring(2));
+        float y = Float.parseFloat(reses[1].substring(2));
+        float r = Float.parseFloat(reses[2].substring(2));
         parameters.put("x", x);
         parameters.put("y", y);
         parameters.put("r", r);
