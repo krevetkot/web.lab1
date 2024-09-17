@@ -1,7 +1,6 @@
 package labs;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -12,13 +11,10 @@ public class Validator {
         float y = params.get("y");
         float r = params.get("r");
 
-        if ( (x>=-r/2) && (x<=0) && (y>=0) && (y<=r) || //in rectangle
+        return ( (x>=-r/2) && (x<=0) && (y>=0) && (y<=r) || //in rectangle
                 (x<=0) && (y>=-2*x-r) && (y<=0) || //in triangle
                 (x*x + y*y <= r*r) && (x>=0) && (y<=0) //in circle
-        ){
-            return true;
-        }
-        return false;
+        );
     }
 
     public boolean validateParams(LinkedHashMap<String, Float> params){
