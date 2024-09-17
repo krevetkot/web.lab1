@@ -64,6 +64,7 @@ function saveArticle(event){
 		const newRow = lastTries.insertRow(-1);
 		const newCell = newRow.insertCell(0);
 
+		if (answ.result==)
 		newCell.textContent = answ.result + ' x=' + answ.x + '; y=' + answ.y + '; r=' + answ.r + " "
 			+ answ.time + " " + answ.workTime + "\n";
 

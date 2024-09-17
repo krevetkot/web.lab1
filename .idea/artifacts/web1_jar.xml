@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="web1:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/web1_jar</output-path>
+    <root id="archive" name="web1.jar">
+      <element id="module-output" name="web1" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/libs/fastcgi-lib.jar" path-in-jar="/" />
+      <element id="library" level="module" name="Maven: com.fastcgi:fastcgi-lib:1.0" module-name="web1" />
+    </root>
+  </artifact>
+</component>
