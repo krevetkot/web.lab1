@@ -6,7 +6,6 @@ class InvalidValueException extends Error {
 }
 
 function validation(values){
-	console.log(values);
 	if (values.x===undefined){
 		throw new InvalidValueException('You didn\'t choose X');
 	}
@@ -17,7 +16,7 @@ function validation(values){
 		throw new InvalidValueException('You didn\'t choose Y');
 	} else {
 		var floaty = parseFloat(values.y);
-		if (!/^(-?\d+(\.\d+)?)$/.test(floaty)){
+		if (!/^(-?\d+(\.\d+)?)$/.test(values.y.trim())){
 			throw new InvalidValueException('Y must be the number');
 		}
 		if (floaty<=-5 || floaty>=3){
@@ -43,25 +42,28 @@ function saveArticle(event){
 	
 	fetch('/fcgi-bin/Server.jar?' + new URLSearchParams(formData).toString(), {method: "GET"})
 	.then(response => {
-		if (!response.ok){
-			throw new Error('${response.status}');
-		}
 		return response.text();
 	})
 	.then(function (answer){
-
-
 		var answ = JSON.parse(answer);
 
-		if (answ.code===200) {
+		if (answ.code==="200") {
 
 			const lastTries = document.getElementById('tries');
 
 			if (lastTries.rows.length >= 8) {
-				lastTries.innerHTML = '';
+				const allTr = lastTries.getElementsByTagName("tr");
+				while (allTr.length-1){
+					allTr[1].remove();
+				}
 			}
 			const newRow = lastTries.insertRow(-1);
-			const newCell = newRow.insertCell(0);
+			const resCell = newRow.insertCell(0)
+			const xCell = newRow.insertCell(1);
+			const yCell = newRow.insertCell(2);
+			const rCell = newRow.insertCell(3);
+			const timeCell = newRow.insertCell(4);
+			const scriptCell = newRow.insertCell(5);
 
 			let textResult;
 			if (answ.result === "true") {
@@ -69,9 +71,13 @@ function saveArticle(event){
 			} else {
 				textResult = "NO ";
 			}
-			newCell.textContent = textResult + 'x=' + answ.x + '; y=' + answ.y + '; r=' + answ.r + " "
-				+ answ.time + "\n";
-		} else if (answ.code===400){
+			resCell.textContent = textResult;
+			xCell.textContent = answ.x;
+			yCell.textContent = answ.y;
+			rCell.textContent = answ.r;
+			timeCell.textContent = answ.time;
+			scriptCell.textContent = answ.scriptTime; //пока что
+		} else if (answ.code==="400"){
 			alert(answ.result)
 		}
 

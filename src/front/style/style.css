@@ -17,19 +17,18 @@ table{
   
 
 td, th {
-	/*border: 3px solid #245488;*/
+	//border: 3px solid #245488;
 	padding: 10px 20px;
     vertical-align: top;
 	width: 30%;
-	
 }
 
 /*селектор идентификатора*/
 #tries {
 	width: 100%;
 	height: 100px;
+	table-layout: fixed;
 }
-
 
 /*селектор элемента*/
 body {
@@ -48,9 +47,13 @@ img[src="style/area.png"] {
 
 
 #history {
-	/*background: white;*/
+	width: 40%;
 }
-	
+
+#tdWithArea{
+	width: 20%;
+}
+
 /*селектор потомков (i - потомок p)*/
 p i {
 	color: maroon;
