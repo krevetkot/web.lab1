@@ -1,25 +1,28 @@
 package labs;
+
 import com.fastcgi.FCGIInterface;
+
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
 public class Main {
     private static final String HTTP_RESPONSE = """
-        Content-Type: application/json
-        
-        {"code":"%d","result":"%s","x":"%d","y":"%.3f","r":"%.1f","time":"%s","scriptTime":"%.3f"}
-        """;
+            Content-Type: application/json
+                    
+            {"code":"%d","result":"%s","x":"%d","y":"%.3f","r":"%.1f","time":"%s","scriptTime":"%.3f"}
+            """;
     private static final String HTTP_ERROR = """
-        Content-Type: application/json
-        
-        {"code":"%d","result":"%s","time":"%s","scriptTime":"%.3f"}
-        """;
+            Content-Type: application/json
+                    
+            {"code":"%d","result":"%s","time":"%s","scriptTime":"%.3f"}
+            """;
+
     public static void main(String[] args) {
 
         FCGIInterface fcgi = new FCGIInterface();
 
-        while(fcgi.FCGIaccept() >= 0) {
+        while (fcgi.FCGIaccept() >= 0) {
             if (FCGIInterface.request.params.getProperty("REQUEST_METHOD").equals("GET")) {
                 long time = System.nanoTime();
                 Properties prop = System.getProperties();
@@ -35,28 +38,27 @@ public class Main {
                         if (isValidated) {
                             System.out.printf((HTTP_RESPONSE) + "%n", 200, isHit, params.get("x").intValue(), params.get("y"), params.get("r"),
                                     String.valueOf(LocalTime.now()).split("\\.")[0],
-                                    (double)(System.nanoTime() - time)/ 1000000); //
+                                    (double) (System.nanoTime() - time) / 1000000); //
                         } else {
                             System.out.printf((HTTP_ERROR) + "%n", 400, "Invalid values", String.valueOf(LocalTime.now()).split("\\.")[0],
-                                    (double)(System.nanoTime() - time)/ 1000000);
+                                    (double) (System.nanoTime() - time) / 1000000);
                         }
                     } catch (NumberFormatException e) {
                         System.out.printf((HTTP_ERROR) + "%n", 400, "Invalid values", String.valueOf(LocalTime.now()).split("\\.")[0],
-                                (double)(System.nanoTime() - time)/ 1000000);
-                    } catch (Exception e){
+                                (double) (System.nanoTime() - time) / 1000000);
+                    } catch (Exception e) {
                         System.out.printf((HTTP_ERROR) + "%n", 400, e.getMessage(), String.valueOf(LocalTime.now()).split("\\.")[0],
-                                (double)(System.nanoTime() - time)/ 1000000);
+                                (double) (System.nanoTime() - time) / 1000000);
                     }
-                }
-                else {
+                } else {
                     System.out.printf((HTTP_ERROR) + "%n", 400, "Fill values", String.valueOf(LocalTime.now()).split("\\.")[0],
-                            (double)(System.nanoTime() - time)/ 10000000);
+                            (double) (System.nanoTime() - time) / 10000000);
                 }
             }
         }
     }
 
-    public static LinkedHashMap<String, Float> parse(String queryString) throws IndexOutOfBoundsException{
+    public static LinkedHashMap<String, Float> parse(String queryString) throws IndexOutOfBoundsException {
         LinkedHashMap<String, Float> parameters = new LinkedHashMap<>();
         String[] reses = queryString.split("&");
         float x = Float.parseFloat(reses[0].substring(2));

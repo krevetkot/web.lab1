@@ -6,22 +6,22 @@ import java.util.List;
 
 public class Validator {
 
-    public boolean isHit(LinkedHashMap<String, Float> params){
+    public boolean isHit(LinkedHashMap<String, Float> params) {
         float x = params.get("x");
         float y = params.get("y");
         float r = params.get("r");
 
-        return ( (x>=-r/2) && (x<=0) && (y>=0) && (y<=r) || //in rectangle
-                (x<=0) && (y>=-2*x-r) && (y<=0) || //in triangle
-                (x*x + y*y <= r*r) && (x>=0) && (y<=0) //in circle
+        return ((x >= -r / 2) && (x <= 0) && (y >= 0) && (y <= r) || //in rectangle
+                (x <= 0) && (y >= -2 * x - r) && (y <= 0) || //in triangle
+                (x * x + y * y <= r * r) && (x >= 0) && (y <= 0) //in circle
         );
     }
 
-    public boolean validateParams(LinkedHashMap<String, Float> params){
+    public boolean validateParams(LinkedHashMap<String, Float> params) {
         return validateX(params.get("x")) && validateY(params.get("y")) && validateR(params.get("r"));
     }
 
-    private boolean validateX(float x){
+    private boolean validateX(float x) {
         List<Float> xValues = new ArrayList<>(9);
         xValues.add(-3f);
         xValues.add(-2f);
@@ -34,11 +34,12 @@ public class Validator {
         xValues.add(5f);
         return xValues.contains(x);
     }
-    private boolean validateY(float y){
-        return (y<3 && y>-5);
+
+    private boolean validateY(float y) {
+        return (y < 3 && y > -5);
     }
 
-    private boolean validateR(float r){
+    private boolean validateR(float r) {
         List<Float> rValues = new ArrayList<>(5);
         rValues.add(1f);
         rValues.add(1.5f);
