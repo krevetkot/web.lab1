@@ -76,7 +76,10 @@ function saveArticle(event){
 			yCell.textContent = answ.y;
 			rCell.textContent = answ.r;
 			timeCell.textContent = answ.time;
-			scriptCell.textContent = answ.scriptTime; //пока что
+			scriptCell.textContent = answ.scriptTime;
+
+			localStorage.setItem('savedLastTries', JSON.stringify(tableToJson(document.getElementById('tries'))));
+
 		} else if (answ.code==="400"){
 			alert(answ.result)
 		}
@@ -84,10 +87,54 @@ function saveArticle(event){
 	})
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+//function onbeforeunloadFunction(){
+//}
+
+function onloadFunction(){
+	let savedMas = JSON.parse(localStorage.getItem('savedLastTries'));
+	if (savedMas){
+
+		var lastTries = document.getElementById('tries');
+		for (var i=0; i<savedMas.length; i++){
+			const newRow = lastTries.insertRow(-1);
+			const resCell = newRow.insertCell(0)
+			const xCell = newRow.insertCell(1);
+			const yCell = newRow.insertCell(2);
+			const rCell = newRow.insertCell(3);
+			const timeCell = newRow.insertCell(4);
+			const scriptCell = newRow.insertCell(5);
+
+			resCell.textContent = savedMas[i][0];
+			xCell.textContent = savedMas[i][1];
+			yCell.textContent = savedMas[i][2];
+			rCell.textContent = savedMas[i][3];
+			timeCell.textContent = savedMas[i][4];
+			scriptCell.textContent = savedMas[i][5];
+		}
+		return null;
+	}
+}
+
+//window.onbeforeunload = onbeforeunloadFunction();
+//window.onload = onloadFunction();
+window.addEventListener('load', onloadFunction());
+
+
+function tableToJson(table) {
+	var data = [];
+	for (var i = 1; i < table.rows.length; i++) {
+		var tableRow = table.rows[i];
+		var rowData = [];
+		for (var j = 0; j < tableRow.cells.length; j++) {
+			rowData.push(tableRow.cells[j].innerHTML);
+		}
+		data.push(rowData);
+	}
+	return data;
+}
+
+/*document.addEventListener("DOMContentLoaded", () => {
 	console.log("Hello World!");
   
   let mainForm = document.getElementById('main');  
-  mainForm.addEventListener('submit', saveArticle);
-
-});
+  mainForm.addEventListener('submit', saveArticle);*/
